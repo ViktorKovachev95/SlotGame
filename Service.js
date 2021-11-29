@@ -14,9 +14,17 @@ class Service {
     }
 
     getSymbols(){
-        return this.symbolArr
+        return this.symbolArr;
     }
-
+    // Not working , finish it 
+    symbolClear(symbolArr){
+        while(symbolArr.length){
+            this.symbolArr.pop(symbol);
+            this.symbolArr.destroy(symbol);
+        };
+        return this.symbolArr;
+    }
+    
     checkWin(){        
         var counts = {};
         if(this.symbolArr.length){

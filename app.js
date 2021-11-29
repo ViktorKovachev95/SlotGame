@@ -47,7 +47,8 @@ function onAssetsLoaded() {
    balanceText.x = 1400;
    balanceText.y = 60;
    app.stage.addChild(balanceText);
-
+   
+   //Do it to work with functions , maybe add a player constructor
    //credit button
    const addCreditBtn = new PIXI.Graphics();
    addCreditBtn.beginFill(0x42f593);
