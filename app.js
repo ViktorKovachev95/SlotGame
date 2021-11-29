@@ -1,7 +1,7 @@
 'use strict'
 // Application build
 import Service from './Service.js';
-const app = new PIXI.Application({});
+const app = new PIXI.Application({resizeTo: window});
 app.renderer.backgroundColor = 0x000000;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 document.body.appendChild(app.view);
@@ -17,7 +17,7 @@ function onAssetsLoaded() {
    //Slot Frame
    const slotFrame = new PIXI.Sprite(PIXI.Texture.from('SlotFrame.png'));
    app.stage.addChild(slotFrame);
-   var service = new Service(1000, 3);
+   var service = new Service(1000, 8);
    
    //Symbols    
    const symbolArrContainer = new PIXI.Container();
@@ -46,7 +46,29 @@ function onAssetsLoaded() {
    balanceText.style.fill = "red";
    balanceText.x = 1400;
    balanceText.y = 60;
-   app.stage.addChild(balanceText);   
+   app.stage.addChild(balanceText);
+
+   //credit button
+   const addCreditBtn = new PIXI.Graphics();
+   addCreditBtn.beginFill(0x42f593);
+   addCreditBtn.drawCircle(30,30,30);
+   addCreditBtn.endFill();
+   addCreditBtn.interactive= true;
+   addCreditBtn.buttonMode = true;
+   addCreditBtn.x = 1500;
+   addCreditBtn.y = 100;
+   app.stage.addChild(addCreditBtn);
+
+   const removeCreditBtn = new PIXI.Graphics();
+   removeCreditBtn.beginFill(0xf5426c);
+   removeCreditBtn.drawCircle(30,30,30);
+   removeCreditBtn.endFill();
+   removeCreditBtn.interactive= true;
+   removeCreditBtn.buttonMode = true;
+   removeCreditBtn.x = 1400;
+   removeCreditBtn.y = 100;
+   app.stage.addChild(removeCreditBtn);
+
 
    function onClick(){
       service.spin();
@@ -62,7 +84,7 @@ app.loader.load(onAssetsLoaded);
 
 
 /*
-// ReelSpinning (Virtual Scrolling Dom)
+// ReelSpinning (Virtual Scrolling Dom) Architecture , for later update after you finish your tasks 
 // 1.Infrastructure
 
 const SETTINGS = {

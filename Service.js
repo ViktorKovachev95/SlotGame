@@ -21,13 +21,13 @@ class Service {
         var counts = {};
         if(this.symbolArr.length){
                var middleColumn = this.symbolArr.map(column => {
-                   return column.find((symbol, index) => index === 1)
+                   return column.find((symbol, index) => index === 0)
                }).sort((a, b) => a - b)
         }
 
         middleColumn.forEach((x) => {
             counts[x] = (counts[x] || 0) + 1;
-        });
+        });console.log(middleColumn)
 ;
         return Object.values(counts).find(count => count >= 3);
     }
@@ -57,7 +57,7 @@ class Service {
         } else {
             this.setBalance(this.balance - 20);
         }
-    }
+    } 
 }
 
 export default Service;
