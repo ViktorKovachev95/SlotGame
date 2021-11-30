@@ -1,8 +1,11 @@
+const symbolContainer = new PIXI.Container();
+
 class Service {
     constructor(balance, symbols){
         this.balance = balance
         this.symbolsAllowed = symbols
         this.symbolArr = []
+        this.bet = 20;
     }
 
     getBalance(){
@@ -13,18 +16,20 @@ class Service {
         this.balance = newBalance;
     }
 
+    getBet(){
+        return this.bet;
+    }
+
+    setBet(bet){
+        this.bet = bet
+    }
+
     getSymbols(){
-        return this.symbolArr;
+        return this.symbolArr
     }
-    // Not working , finish it 
-    symbolClear(symbolArr){
-        while(symbolArr.length){
-            this.symbolArr.pop(symbol);
-            this.symbolArr.destroy(symbol);
-        };
-        return this.symbolArr;
-    }
+
     
+
     checkWin(){        
         var counts = {};
         if(this.symbolArr.length){
@@ -35,12 +40,24 @@ class Service {
 
         middleColumn.forEach((x) => {
             counts[x] = (counts[x] || 0) + 1;
-        });console.log(middleColumn)
-;
+        });
+
+        console.log(middleColumn);
         return Object.values(counts).find(count => count >= 3);
     }
 
+    hasBalance(){
+        return this.balance > 0 && this.bet <= this.balance
+    }
+
+    clearSymbols(){
+        for (var i = symbolContainer.children.length - 1; i >= 0; i--) {	
+            symbolContainer.removeChild(symbolContainer.children[i]);
+        };
+    }
+
     spin(){
+        this.clearSymbols();
         this.symbolArr = [];
         let tempArr = [];
         
@@ -56,16 +73,19 @@ class Service {
             } else {
                 tempArr.push(symbolNum);
             }
-            app.stage.addChild(symbol);
+            symbolContainer.addChild(symbol);
         };
 
+        app.stage.addChild(symbolContainer);
 
         if(this.checkWin()){
-            this.setBalance(this.balance + 1000);
+            this.setBalance(this.balance + this.bet*2);
         } else {
-            this.setBalance(this.balance - 20);
+            this.setBalance(this.balance - this.bet);
         }
-    } 
+    }
+
+    
 }
 
 export default Service;

@@ -1,10 +1,11 @@
 'use strict'
 // Application build
 import Service from './Service.js';
-const app = new PIXI.Application({resizeTo: window});
+const app = new PIXI.Application({resizeTo:window});
 app.renderer.backgroundColor = 0x000000;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 document.body.appendChild(app.view);
+const BET_STEP = 20;
 
 Object.assign(window, { app })
 
@@ -14,24 +15,51 @@ app.loader
    .add('SpriteSheet', 'assets/SpriteSheet.json')
 
 function onAssetsLoaded() {
+   // TODO: Number Validation , chereshkata na tortatata , che bugva :D
+
+   var balance = Number(prompt('Enter balance'));
    //Slot Frame
    const slotFrame = new PIXI.Sprite(PIXI.Texture.from('SlotFrame.png'));
    app.stage.addChild(slotFrame);
-   var service = new Service(1000, 8);
+   var service = new Service(balance, 8);
    
-   //Symbols    
-   const symbolArrContainer = new PIXI.Container();
-   const symbolContainer = new PIXI.Container();
-   
-   //Button
-   const button = new PIXI.Sprite(PIXI.Texture.from(`SpinButton_Normal.png`));
-   button.interactive= true;
-   button.buttonMode = true;
-   button.x =  app.screen.width/1.53;
-   button.y =  app.screen.height/1.16;
+   //TODO: Switch funtion button while spinning the reels after you do the animation
 
-   button.addListener("pointerdown", onClick);
-   app.stage.addChild(button);
+   //Spin button
+   const spinButtonNormal = new PIXI.Sprite(PIXI.Texture.from(`SpinButton_Normal.png`));
+   const spinButtonActive = new PIXI.Sprite(PIXI.Texture.from(`SpinButton_Active.png`));
+
+   spinButtonNormal.interactive= true;
+   spinButtonNormal.buttonMode = true;
+   spinButtonNormal.x =  app.screen.width/1.53;
+   spinButtonNormal.y =  app.screen.height/1.16;
+
+   spinButtonNormal.addListener("pointerdown", onClick);
+   app.stage.addChild(spinButtonNormal);   
+
+   //Increase credit
+   const addCreditBtn = new PIXI.Graphics();
+   addCreditBtn.beginFill(0x687623);
+   addCreditBtn.drawCircle(20,20,20);
+   addCreditBtn.endFill();
+   addCreditBtn.x = 1540;
+   addCreditBtn.y = 200;
+   addCreditBtn.interactive= true;
+   addCreditBtn.buttonMode = true;
+   addCreditBtn.addListener("pointerdown", onAddCreditClick);
+   app.stage.addChild(addCreditBtn);
+
+   //Decrease credit
+   const decreaseCreditBtn = new PIXI.Graphics();
+   decreaseCreditBtn.beginFill(0x123456);
+   decreaseCreditBtn.drawCircle(20,20,20);
+   decreaseCreditBtn.endFill();
+   decreaseCreditBtn.x = 1440;
+   decreaseCreditBtn.y = 200;
+   decreaseCreditBtn.interactive= true;
+   decreaseCreditBtn.buttonMode = true;
+   decreaseCreditBtn.addListener("pointerdown", onDecreaseCreditClick);
+   app.stage.addChild(decreaseCreditBtn);
 
    //winner
    const winText = new PIXI.Text('YOU WIN !!!!');
@@ -41,38 +69,49 @@ function onAssetsLoaded() {
    winText.y = 20;
    app.stage.addChild(winText);
 
+   //loser
+   const loseText = new PIXI.Text('YOU LOSE !!!!');
+   loseText.style.fill = "red";
+   loseText.visible = false;
+   loseText.x = 1400;
+   loseText.y = 20;
+   app.stage.addChild(loseText);
+
    //balance
    const balanceText = new PIXI.Text(`Balance: ${service.getBalance()}`)
    balanceText.style.fill = "red";
    balanceText.x = 1400;
    balanceText.y = 60;
    app.stage.addChild(balanceText);
+
+   //bet
+   const betText = new PIXI.Text(`Current bet: ${service.getBet()}`)
+   betText.style.fill = "red";
+   betText.x = 1400;
+   betText.y = 120;
+   app.stage.addChild(betText);
    
-   //Do it to work with functions , maybe add a player constructor
-   //credit button
-   const addCreditBtn = new PIXI.Graphics();
-   addCreditBtn.beginFill(0x42f593);
-   addCreditBtn.drawCircle(30,30,30);
-   addCreditBtn.endFill();
-   addCreditBtn.interactive= true;
-   addCreditBtn.buttonMode = true;
-   addCreditBtn.x = 1500;
-   addCreditBtn.y = 100;
-   app.stage.addChild(addCreditBtn);
+   function onAddCreditClick(){
+      if (service.getBet() + BET_STEP <= service.getBalance()){
+         service.setBet(service.getBet() + 20);
+         betText.text = `Current bet: ${service.getBet()}`;
+      }
+   }
 
-   const removeCreditBtn = new PIXI.Graphics();
-   removeCreditBtn.beginFill(0xf5426c);
-   removeCreditBtn.drawCircle(30,30,30);
-   removeCreditBtn.endFill();
-   removeCreditBtn.interactive= true;
-   removeCreditBtn.buttonMode = true;
-   removeCreditBtn.x = 1400;
-   removeCreditBtn.y = 100;
-   app.stage.addChild(removeCreditBtn);
-
+   function onDecreaseCreditClick(){
+      if (service.getBet() - BET_STEP >= BET_STEP){
+         service.setBet(service.getBet() - BET_STEP);
+         betText.text = `Current bet: ${service.getBet()}`;
+      }
+   }
 
    function onClick(){
-      service.spin();
+      if(service.hasBalance()){
+         service.spin();
+      } else {
+         loseText.visible = true;
+      }
+
       if(service.checkWin()){
          winText.visible = true;
       } else {
@@ -85,7 +124,7 @@ app.loader.load(onAssetsLoaded);
 
 
 /*
-// ReelSpinning (Virtual Scrolling Dom) Architecture , for later update after you finish your tasks 
+// ReelSpinning (Virtual Scrolling Dom)
 // 1.Infrastructure
 
 const SETTINGS = {
