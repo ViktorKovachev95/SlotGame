@@ -21,10 +21,10 @@ function onAssetsLoaded() {
    //Slot Frame
    const slotFrame = new PIXI.Sprite(PIXI.Texture.from('SlotFrame.png'));
    app.stage.addChild(slotFrame);
-   var service = new Service(balance, 8);
+   var service = new Service(balance, 8564654544654);
    
    //TODO: Switch funtion button while spinning the reels after you do the animation
-
+   // https://codepen.io/ulx/pen/NpqmWq?editors=0010 izplqskai go onCLick po dolu v toq file 
    //Spin button
    const spinButtonNormal = new PIXI.Sprite(PIXI.Texture.from(`SpinButton_Normal.png`));
    const spinButtonActive = new PIXI.Sprite(PIXI.Texture.from(`SpinButton_Active.png`));
@@ -33,7 +33,6 @@ function onAssetsLoaded() {
    spinButtonNormal.buttonMode = true;
    spinButtonNormal.x =  app.screen.width/1.53;
    spinButtonNormal.y =  app.screen.height/1.16;
-
    spinButtonNormal.addListener("pointerdown", onClick);
    app.stage.addChild(spinButtonNormal);   
 
@@ -119,6 +118,19 @@ function onAssetsLoaded() {
       }
       balanceText.text = `Balance: ${service.getBalance()}`
    };
+
+   //Magic
+   // app.ticker.add((delta)=> {
+   //    for(let i=0; i<service.symbolArr.length; i++){
+   //       const r = service.symbolArr[i];
+   //       for (let j=0; j<r.service.symbolsAllowed; j++){
+   //          const s = r.symbols[j];
+   //          const prevy = s.y;
+
+   //       }
+   //    }
+   // })
+
 };
 app.loader.load(onAssetsLoaded);
 
