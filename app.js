@@ -21,7 +21,7 @@ function onAssetsLoaded() {
    //Slot Frame
    const slotFrame = new PIXI.Sprite(PIXI.Texture.from('SlotFrame.png'));
    app.stage.addChild(slotFrame);
-   var service = new Service(balance, 8564654544654);
+   var service = new Service(balance, 8);
    
    //TODO: Switch funtion button while spinning the reels after you do the animation
    // https://codepen.io/ulx/pen/NpqmWq?editors=0010 izplqskai go onCLick po dolu v toq file 
@@ -119,6 +119,9 @@ function onAssetsLoaded() {
       balanceText.text = `Balance: ${service.getBalance()}`
    };
 
+   //More magic
+   const service=new Service(8000);
+   Object.assign(windows,{service})
    //Magic
    // app.ticker.add((delta)=> {
    //    for(let i=0; i<service.symbolArr.length; i++){
@@ -126,7 +129,8 @@ function onAssetsLoaded() {
    //       for (let j=0; j<r.service.symbolsAllowed; j++){
    //          const s = r.symbols[j];
    //          const prevy = s.y;
-
+   //          s.y = (i%3)*270;
+   //          if(s.y<0 %% prevy > symbolArr.length) * 
    //       }
    //    }
    // })

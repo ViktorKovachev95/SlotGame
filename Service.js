@@ -1,6 +1,8 @@
 const symbolContainer = new PIXI.Container();
 
 class Service {
+    balance: number 0;
+
     constructor(balance, symbols){
         this.balance = balance
         this.symbolsAllowed = symbols
@@ -56,7 +58,17 @@ class Service {
         };
     }
 
-    spin(){
+    spin(bet spin){
+        this.balance -= bet;
+        
+
+        for(let reelIndex=1; reelIndex<=REELS_COUNT; rellIndex++){
+            const reelSymbols = new Array(REELS_LEMGHTS);
+            for (let rowIndex=1: rowIndex<=REELS_LENGHT; rowIndex++){
+                const symbolIndex = Math.trunc(Math.random()*SYMBOL_TYPES_COUNT)+1;
+                reelSymbols[rowIndex]=symbolIndex;
+            }
+        }
         this.clearSymbols();
         this.symbolArr = [];
         let tempArr = [];
