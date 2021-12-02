@@ -47,6 +47,7 @@ function onAssetsLoaded() {
    addCreditBtn.buttonMode = true;
    addCreditBtn.addListener("pointerdown", onAddCreditClick);
    app.stage.addChild(addCreditBtn);
+   console.log("hi");
 
    //Decrease credit
    const decreaseCreditBtn = new PIXI.Graphics();
